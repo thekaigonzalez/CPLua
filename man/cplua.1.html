@@ -1,0 +1,51 @@
+<html lang="en-US">
+
+<link rel="stylesheet" href="styles/man.css">
+
+<h2>CPLUA(1) The "Lua Compiler Manual" CPLUA(1)</h2>
+
+<h3><strong>NAME</strong></h3>
+
+<pre>
+    cplua - Compile and link Lua to an executable
+</pre>
+
+<h3><strong>SYNOPSIS</strong></h3>
+
+<pre>
+    cplua [file] [output-file] [working-directory]
+</pre>
+
+<h3><strong>DESCRIPTION</strong></h3>
+
+<pre>
+    `cplua` Runs a program which creates an executable which runs CPLua.extension in the <strong>directory(3)</strong>.
+    If we run a command such as <em>cplua main.lua ./main.out ./</em>, it will create main.out and CPLua.extension
+    in the working <strong>directory(3)</strong>.
+
+    If CPLua.extension is not present, the program will fail to run since it was built using the CPLua.extension.
+    The Working <strong>directory(3)</strong> must end with a <em>SLASH</em> in the format of a unix path, if not,
+    The program is not 100% guaranteed to compile cleanly.
+
+    Programs heavily rely on Lua headers being installed on the host system, If you don't have them, Please do
+
+        sudo apt-get install lua5.3 liblua5.3-dev
+
+    They contain headers required for the program to run.
+
+    <strong style="color: #A00000">Linked Lua:</strong>
+        Programs are hard-coded to be linked to a file called CPLua.extension with the exception of the
+        working <strong>directory(3)</strong>.
+        If CPLua.extension is not found, Then luaL_dofile() will print an error to <a href="https://linux.die.net/man/3/stderr">stderr(3)</a>.
+
+    Programs ARE NOT 100% guaranteed to be compiled cleanly, The required tools will higher the chances.
+
+</pre>
+
+<h3><strong>COPYRIGHT</strong></h3>
+
+<pre>
+    This project is licensed under the MIT License.
+</pre>
+
+</html>
