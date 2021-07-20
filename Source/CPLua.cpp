@@ -7,6 +7,5 @@
 int main(int argc, char * * argv) {
     std::string first = argv[1];
     std::string outname = argv[2];
-    std::string wd = argv[3];
-    CP_CompileLua(first , outname, wd);
+    CP_CompileLua(first , outname);
 }

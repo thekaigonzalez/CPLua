@@ -8,7 +8,7 @@ void PrinWork()
 {
     std::cout << std::filesystem::current_path();
 }
-void CP_CompileLua(const std::string& fname, const std::string& outname = "a.out", const std::string& workingdir = "./")
+void CP_CompileLua(const std::string& fname, const std::string& outname = "a.out")
 {
     std::ifstream LuaFile(fname);
     if (!LuaFile)
@@ -22,8 +22,10 @@ void CP_CompileLua(const std::string& fname, const std::string& outname = "a.out
         {
             scriptString += bits + "\n";
         }
-        std::ofstream outPutFile(workingdir + "CPLua.extension");
-        std::ofstream CXX(workingdir + "tmp.cpp");
+
+        std::ofstream CXX("tmp.cpp");
+        system(("luac -o " + outname + ".bin " + fname).c_str());
+
         CXX << "#include <lua5.3/lua.hpp>\n"
                "\n"
                "#include <lua5.3/lauxlib.h>\n"
@@ -37,16 +39,15 @@ void CP_CompileLua(const std::string& fname, const std::string& outname = "a.out
                "//    DO NOT EDIT\n"
                "    lua_State *L = luaL_newstate();\n"
                "    luaL_openlibs(L);\n"
-               "    if (luaL_dofile(L, \"" << workingdir << "CPLua.extension\") == 1)\n"
+               "    if (luaL_dofile(L, \"" << outname << ".bin\") == 1)\n"
                "    {\n"
-               "        fprintf(stderr,\"luaL_dofile failed: %s\\n\",lua_tostring(L,-1));\n"
+               "        fprintf(stderr,\"error in extension code: %s\\n\",lua_tostring(L,-1));\n"
                "    }\n"
                "    return 0;\n"
                "}\n";
         CXX.close();
-        outPutFile << scriptString;
-        outPutFile.close();
-        system(("g++ " + workingdir + "tmp.cpp -llua5.3 -ldl -Wall -o " + outname).c_str());
-        std::remove((workingdir + "CPLua").c_str())
+
+        system(("g++ tmp.cpp -llua5.3 -ldl -Wall -o " + outname).c_str());
+
     }
 }
